@@ -1,13 +1,16 @@
-const permutations = function (array, next = "", iterations = []) {
+const permutations = function (array, next = "") {
   if (array.length <= 1) {
-    return array;
+    return [array];
   }
   next = array.slice(-1)[0];
-  let subbar = array.slice(0, -1);
-  iterations = permutations(subbar, next, iterations);
-  for (let i = 0; i < iterations.length; i++) {
-    for (let j = 0; i <= iterations[i].length; j++) {
-      iterations.push(subbar.toSpliced(i, 0, next));
+  let subarr = array.slice(0, -1);
+  let iterations = [];
+  iterations.push(...permutations(subarr, next));
+  const copy = structuredClone(iterations);
+  iterations = [];
+  for (let i = 0; i < copy.length; i++) {
+    for (let j = 0; j <= copy[i].length; j++) {
+      iterations.push(copy[i].toSpliced(j, 0, next));
     }
   }
   return iterations;
